@@ -18,11 +18,32 @@ class LanguageBot < SlackRubyBot::Bot
       user.locale = match[:expression]
       user.save
 
-      text = "Set locale successfully"
+      I18n.locale = user.locale
+      text = I18n.t "set_locale_success"
       client.say(text: text, channel: data.channel)
     else 
-      text = "Incorrect locale"
+      puts user.locale
+      I18n.locale = user.locale
+      text = I18n.t "locale_not_available", token: match[:expression]
       client.say(text: text, channel: data.channel)
+    end 
+  end
+
+  command 'study' do |client, data, match|
+    question = FlashCard.order("RANDOM()").first
+    # puts question.term
+
+    Rails.cache.write "ans", question.definition
+    client.say(text: "What " + question.term + " in Vietnamese?", channel: data.channel)
+  end
+
+  command 'ans' do |client, data, match|
+    # puts Rails.cache.read("ans")
+    # puts match[:expression]
+    if Rails.cache.read("ans") == match[:expression]
+      client.say(text: "That is correct", channel: data.channel)
+    else 
+      client.say(text: "That is incorrect", channel: data.channel)
     end 
   end
 end

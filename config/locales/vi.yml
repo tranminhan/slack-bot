@@ -1,2 +1,4 @@
 vi:
   hello: "Xin chào %{user}"
+  set_locale_success: "Chuyển ngôn ngữ thành công"
+  locale_not_available: "%{token} không được hỗ trợ"

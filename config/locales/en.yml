@@ -21,3 +21,5 @@
 
 en:
   hello: "Hello world %{user}"
+  set_locale_success: "Set locale successfully"
+  locale_not_available: "Locale %{token} is not available"
